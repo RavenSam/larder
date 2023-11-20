@@ -4,9 +4,26 @@ import { revalidatePath } from "next/cache"
 import { db } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
 
-import { CreateInputType, CreateReturnType } from "./types"
+import {
+  CreateInputType,
+  CreateReturnType,
+  DeleteInputType,
+  DeleteReturnType,
+  UpdateInputType,
+  UpdateReturnType,
+} from "./types"
 import { createSafeAction } from "@/lib/create-safe-action"
-import { CreateBoardSchema } from "./schema"
+import {
+  CreateBoardSchema,
+  DeleteBoardSchema,
+  UpdateBoardSchema,
+} from "./schema"
+import { redirect } from "next/navigation"
+
+// --- Steps to follow to implement safe action
+// --------- Step 1: Create Zod Schema
+// --------- Step 2: Create Types
+// --------- Step 2: Create The Action
 
 // **********************************************************************
 // CREATE BOARD
@@ -59,13 +76,72 @@ const createdHandler = async (
     return { error: "Failed to create board" }
   }
 
-  revalidatePath(`/boards/${board.id}`)
-
   return { data: board }
 }
 
 export const createBoard = createSafeAction(CreateBoardSchema, createdHandler)
 
 // **********************************************************************
-// DELETEE BOARD
+// UPDATE BOARD
 // **********************************************************************
+
+const updatedHandler = async (
+  data: UpdateInputType
+): Promise<UpdateReturnType> => {
+  const { userId, orgId } = auth()
+
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized",
+    }
+  }
+
+  const { title, id } = data
+
+  let board
+
+  try {
+    board = await db.board.update({ where: { id, orgId }, data: { title } })
+  } catch (error) {
+    console.log(error)
+    return { error: "Failed to update board" }
+  }
+
+  // revalidatePath(`/board/${board.id}`)
+
+  return { data: board }
+}
+
+export const updateBoard = createSafeAction(UpdateBoardSchema, updatedHandler)
+
+// **********************************************************************
+// DELETE BOARD
+// **********************************************************************
+
+const deleteHandler = async (
+  data: DeleteInputType
+): Promise<DeleteReturnType> => {
+  const { userId, orgId } = auth()
+
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized",
+    }
+  }
+
+  const { id } = data
+
+  let board
+
+  try {
+    board = await db.board.delete({ where: { id, orgId } })
+  } catch (error) {
+    console.log(error)
+    return { error: "Failed to delete board" }
+  }
+
+  // revalidatePath(`/organization/${orgId}`)
+  redirect(`/organization/${orgId}`)
+}
+
+export const deleteBoard = createSafeAction(DeleteBoardSchema, deleteHandler)

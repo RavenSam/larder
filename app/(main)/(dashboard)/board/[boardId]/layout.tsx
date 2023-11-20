@@ -2,6 +2,7 @@ import { db } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
 import { notFound, redirect } from "next/navigation"
 import { BoardNavbar } from "./_components/board-navbar"
+import Image from "next/image"
 
 type ParamsType = { boardId: string }
 
@@ -37,9 +38,17 @@ export default async function BoardLayout({ children, params }: Props) {
 
   return (
     <div
-      style={{ backgroundImage: `url(${board.imageFullUrl})` }}
+      // style={{ backgroundImage: `url(${board.imageFullUrl})` }}
       className="relative bg-no-repeat bg-center bg-cover w-full h-full"
     >
+      <Image
+        src={board.imageFullUrl}
+        alt={board.title}
+        fill
+        className="object-cover"
+        property="100"
+      />
+
       <div className="absolute inset-0 bg-black/20" />
 
       <BoardNavbar board={board} />
