@@ -39,7 +39,7 @@ export const FormSubmit = ({
       className={cn(className)}
     >
       {pending && spinner && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      {children}
+      {!pending && spinner && children}
     </Button>
   )
 }

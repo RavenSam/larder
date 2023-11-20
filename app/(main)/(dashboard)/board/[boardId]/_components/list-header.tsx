@@ -1,32 +1,27 @@
-"use client"
-
-import { ElementRef, useRef, useState } from "react"
-import { Board } from "@prisma/client"
-import { toast } from "sonner"
-import { updateBoard } from "@/actions/board"
+import { updateListTitle } from "@/actions/list"
 import { FormInput } from "@/components/form/form-input"
-import { Button } from "@/components/ui/button"
 import { useAction } from "@/hooks/use-action"
+import { ListWithCards } from "@/types"
+import { ElementRef, useRef, useState } from "react"
+import { toast } from "sonner"
 import { useEventListener } from "usehooks-ts"
 
-interface FormBoardTitleProps {
-  board: Board
+interface ListHeaderProps {
+  list: ListWithCards
 }
 
-export const FormBoardTitle = ({ board }: FormBoardTitleProps) => {
-  const [title, setTitle] = useState(board.title)
+export const ListHeader = ({ list }: ListHeaderProps) => {
+  const [title, setTitle] = useState(list.title)
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<ElementRef<"input">>(null)
   const formRef = useRef<ElementRef<"form">>(null)
 
-  const { execute } = useAction(updateBoard, {
-    onSuccess: (data) => {
-      toast.success(`Board renamed "${data.title}"`)
+  const { execute } = useAction(updateListTitle, {
+    onSuccess(data) {
       setTitle(data.title)
-
       setIsEditing(false)
     },
-    onError: (error) => {
+    onError(error) {
       toast.error(error)
     },
   })
@@ -43,30 +38,27 @@ export const FormBoardTitle = ({ board }: FormBoardTitleProps) => {
     formRef.current?.requestSubmit()
   }
 
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string
+    const id = formData.get("id") as string
+
+    execute({ title, id })
+  }
+
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       setIsEditing(false)
     }
   }
 
-  const onSubmit = (formData: FormData) => {
-    const title = formData.get("title") as string
-
-    execute({ title, id: board.id })
-  }
-
   useEventListener("keydown", onKeyDown)
 
   return (
-    <>
+    <div className="p-2 pb-0 text-sm font-semibold flex items-center justify-between">
       {!isEditing && (
-        <Button
-          onClick={enbleEditing}
-          variant={"transparent"}
-          className="font-bold text-xl h-auto w-auto p-1 px-2 drop-shadow-md"
-        >
+        <div onClick={enbleEditing} className="w-full px-2 py-1">
           {title}
-        </Button>
+        </div>
       )}
 
       {isEditing && (
@@ -75,11 +67,14 @@ export const FormBoardTitle = ({ board }: FormBoardTitleProps) => {
             ref={inputRef}
             defaultValue={title}
             name="title"
-            className="bg-transparent focus-visible:ring-transparent focus-visible:ring-offset-0 border-none font-bold text-xl h-auto p-1 px-2"
+            className="bg-black/10 border-none h-auto py-1 px-2 "
             onBlur={onBlur}
+            placeholder="Enter list title..."
           />
+
+          <input type="hidden" name="id" value={list.id} />
         </form>
       )}
-    </>
+    </div>
   )
 }

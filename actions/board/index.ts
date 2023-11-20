@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache"
 import { db } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
+
+import { createSafeAction } from "@/lib/create-safe-action"
 
 import {
   CreateInputType,
@@ -12,13 +15,11 @@ import {
   UpdateInputType,
   UpdateReturnType,
 } from "./types"
-import { createSafeAction } from "@/lib/create-safe-action"
 import {
   CreateBoardSchema,
   DeleteBoardSchema,
   UpdateBoardSchema,
 } from "./schema"
-import { redirect } from "next/navigation"
 
 // --- Steps to follow to implement safe action
 // --------- Step 1: Create Zod Schema
@@ -76,7 +77,7 @@ const createdHandler = async (
     return { error: "Failed to create board" }
   }
 
-  return { data: board }
+  redirect(`/board/${board.id}`)
 }
 
 export const createBoard = createSafeAction(CreateBoardSchema, createdHandler)
@@ -121,7 +122,7 @@ export const updateBoard = createSafeAction(UpdateBoardSchema, updatedHandler)
 const deleteHandler = async (
   data: DeleteInputType
 ): Promise<DeleteReturnType> => {
-  const { userId, orgId } = auth()
+  const { userId, orgId, orgSlug } = auth()
 
   if (!userId || !orgId) {
     return {
@@ -131,17 +132,15 @@ const deleteHandler = async (
 
   const { id } = data
 
-  let board
-
   try {
-    board = await db.board.delete({ where: { id, orgId } })
+    await db.board.delete({ where: { id, orgId } })
   } catch (error) {
     console.log(error)
     return { error: "Failed to delete board" }
   }
 
   // revalidatePath(`/organization/${orgId}`)
-  redirect(`/organization/${orgId}`)
+  redirect(`/organization/${orgSlug}`)
 }
 
 export const deleteBoard = createSafeAction(DeleteBoardSchema, deleteHandler)

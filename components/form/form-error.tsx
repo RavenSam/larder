@@ -11,7 +11,7 @@ export const FormError = ({ id, errors }: FormErrorProps) => {
       {errors?.[id]?.map((error) => (
         <div
           key={error}
-          className="font-semibold text-sm text-rose-500 p-2 pt-0"
+          className="font-semibold text-sm text-rose-500 p-2 py-0"
         >
           {error}
         </div>

@@ -38,16 +38,16 @@ export default async function BoardLayout({ children, params }: Props) {
 
   return (
     <div
-      // style={{ backgroundImage: `url(${board.imageFullUrl})` }}
+      style={{ backgroundImage: `url(${board.imageFullUrl})` }}
       className="relative bg-no-repeat bg-center bg-cover w-full h-full"
     >
-      <Image
+      {/* <Image
         src={board.imageFullUrl}
         alt={board.title}
         fill
         className="object-cover"
         property="100"
-      />
+      /> */}
 
       <div className="absolute inset-0 bg-black/20" />
 
