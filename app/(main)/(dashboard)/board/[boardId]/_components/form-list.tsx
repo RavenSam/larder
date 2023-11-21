@@ -21,14 +21,8 @@ export const FormList = () => {
   const [parent] = useAutoAnimate()
 
   const { execute, isLoading, fieldErrors } = useAction(createList, {
-    onSuccess: (data) => {
-      toast.success(`List "${data.title}" created`)
-
-      setIsEditing(false)
-    },
-    onError: (error) => {
-      toast.error(error)
-    },
+    onSuccess: (data) => setIsEditing(false),
+    onError: (error) => toast.error(error),
   })
 
   const enableEditing = () => {
@@ -61,7 +55,7 @@ export const FormList = () => {
     <ListWrapper>
       <div
         ref={parent}
-        className="overflow-y-hidden bg-white/50 rounded-md shadow-md backdrop-blur"
+        className="overflow-y-hidden bg-white/30 rounded-md shadow-md backdrop-blur"
       >
         {!isEditing && (
           <Button
@@ -77,7 +71,7 @@ export const FormList = () => {
           <form
             action={onSubmit}
             ref={formRef}
-            className="w-full p-3 space-y-3 bg-white/20"
+            className="w-full p-3 space-y-3 bg-white/40"
           >
             <FormInput
               ref={inputRef}
