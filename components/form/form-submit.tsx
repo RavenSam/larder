@@ -19,6 +19,7 @@ interface FormSubmitProps {
     | "ghost"
     | "link"
     | "primary"
+    | "danger"
 }
 
 export const FormSubmit = ({
@@ -35,7 +36,6 @@ export const FormSubmit = ({
       disabled={pending || disabled}
       type="submit"
       variant={variant}
-      size="sm"
       className={cn(className)}
     >
       {pending && spinner && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

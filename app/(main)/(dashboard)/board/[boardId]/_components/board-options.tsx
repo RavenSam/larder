@@ -33,7 +33,7 @@ export default function BoardOptions({ id }: { id: string }) {
       <PopoverContent
         className="px-1 py-3 bg-white/80 backdrop-blur"
         side="bottom"
-        align="start"
+        align="end"
       >
         <div className="text-sm font-bold text-center text-neutral-700 pb-4">
           Board action

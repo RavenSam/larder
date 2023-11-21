@@ -1,5 +1,10 @@
 import { z } from "zod"
-import { CreateListSchema, UpdateListTitleSchema } from "./schema"
+import {
+  CreateListSchema,
+  DeleteListSchema,
+  DuplicateListSchema,
+  UpdateListTitleSchema,
+} from "./schema"
 import { ActionState } from "@/lib/create-safe-action"
 import { List } from "@prisma/client"
 
@@ -19,3 +24,15 @@ export type CreateReturnType = ActionState<CreateInputType, List>
 // **********************************************************************
 export type UpdateTitleInputType = z.infer<typeof UpdateListTitleSchema>
 export type UpdateTitleReturnType = ActionState<UpdateTitleInputType, List>
+
+// **********************************************************************
+// Delete List types
+// **********************************************************************
+export type DeleteInputType = z.infer<typeof DeleteListSchema>
+export type DeleteReturnType = ActionState<DeleteInputType, List>
+
+// **********************************************************************
+// Duplicate List types
+// **********************************************************************
+export type DuplicateInputType = z.infer<typeof DuplicateListSchema>
+export type DuplicateReturnType = ActionState<DuplicateInputType, List>

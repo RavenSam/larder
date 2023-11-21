@@ -5,6 +5,7 @@ import { ListWithCards } from "@/types"
 import { ElementRef, useRef, useState } from "react"
 import { toast } from "sonner"
 import { useEventListener } from "usehooks-ts"
+import ListOptions from "./list-options"
 
 interface ListHeaderProps {
   list: ListWithCards
@@ -55,26 +56,30 @@ export const ListHeader = ({ list }: ListHeaderProps) => {
 
   return (
     <div className="p-2 pb-0 text-sm font-semibold flex items-center justify-between">
-      {!isEditing && (
-        <div onClick={enbleEditing} className="w-full px-2 py-1">
-          {title}
-        </div>
-      )}
+      <div className="">
+        {!isEditing && (
+          <div onClick={enbleEditing} className="w-full px-2 py-1">
+            {title}
+          </div>
+        )}
 
-      {isEditing && (
-        <form action={onSubmit} ref={formRef} className="w-full md:max-w-md">
-          <FormInput
-            ref={inputRef}
-            defaultValue={title}
-            name="title"
-            className="bg-black/10 border-none h-auto py-1 px-2 "
-            onBlur={onBlur}
-            placeholder="Enter list title..."
-          />
+        {isEditing && (
+          <form action={onSubmit} ref={formRef} className="w-full md:max-w-md">
+            <FormInput
+              ref={inputRef}
+              defaultValue={title}
+              name="title"
+              className="bg-black/10 border-none h-auto py-1 px-2 "
+              onBlur={onBlur}
+              placeholder="Enter list title..."
+            />
 
-          <input type="hidden" name="id" value={list.id} />
-        </form>
-      )}
+            <input type="hidden" name="id" value={list.id} />
+          </form>
+        )}
+      </div>
+
+      <ListOptions list={list} />
     </div>
   )
 }

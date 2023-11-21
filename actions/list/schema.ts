@@ -32,3 +32,16 @@ export const UpdateListTitleSchema = z.object({
 
   id: z.string(),
 })
+
+// **********************************************************************
+// Delete List Schema
+// **********************************************************************
+export const DeleteListSchema = z.object({ id: z.string() })
+
+// **********************************************************************
+// Duplicate List Schema
+// **********************************************************************
+export const DuplicateListSchema = z.object({
+  id: z.string(),
+  boardId: z.string(),
+})

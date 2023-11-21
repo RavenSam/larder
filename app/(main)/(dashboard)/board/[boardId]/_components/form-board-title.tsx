@@ -21,9 +21,7 @@ export const FormBoardTitle = ({ board }: FormBoardTitleProps) => {
 
   const { execute } = useAction(updateBoard, {
     onSuccess: (data) => {
-      toast.success(`Board renamed "${data.title}"`)
       setTitle(data.title)
-
       setIsEditing(false)
     },
     onError: (error) => {

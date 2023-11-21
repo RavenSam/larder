@@ -83,6 +83,7 @@ export const FormList = () => {
               ref={inputRef}
               name="title"
               className="bg-black/10 border-none"
+              placeholder="Title list here..."
               errors={fieldErrors}
             />
 

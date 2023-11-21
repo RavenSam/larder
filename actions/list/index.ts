@@ -10,10 +10,19 @@ import { createSafeAction } from "@/lib/create-safe-action"
 import {
   CreateInputType,
   CreateReturnType,
+  DeleteInputType,
+  DeleteReturnType,
+  DuplicateInputType,
+  DuplicateReturnType,
   UpdateTitleInputType,
   UpdateTitleReturnType,
 } from "./types"
-import { CreateListSchema, UpdateListTitleSchema } from "./schema"
+import {
+  CreateListSchema,
+  DeleteListSchema,
+  DuplicateListSchema,
+  UpdateListTitleSchema,
+} from "./schema"
 
 // --- Steps to implement safe action
 // --------- Step 1: Create Zod Schema
@@ -103,4 +112,106 @@ const updatedTitleHandler = async (
 export const updateListTitle = createSafeAction(
   UpdateListTitleSchema,
   updatedTitleHandler
+)
+
+// **********************************************************************
+// DELETE List
+// **********************************************************************
+
+const deleteHandler = async (
+  data: DeleteInputType
+): Promise<DeleteReturnType> => {
+  const { userId, orgId } = auth()
+
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized",
+    }
+  }
+
+  const { id } = data
+
+  let list
+
+  try {
+    list = await db.list.delete({ where: { id, board: { orgId } } })
+  } catch (error) {
+    console.log(error)
+    return { error: "Failed to delete list" }
+  }
+
+  revalidatePath(`/board/${list.boardId}`)
+  return { data: list }
+}
+
+export const deleteList = createSafeAction(DeleteListSchema, deleteHandler)
+
+// **********************************************************************
+// DUPLICATE List
+// **********************************************************************
+
+const duplicateHandler = async (
+  data: DuplicateInputType
+): Promise<DuplicateReturnType> => {
+  const { userId, orgId } = auth()
+
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized",
+    }
+  }
+
+  const { id, boardId } = data
+
+  let list
+
+  try {
+    const listToCopy = await db.list.findUnique({
+      where: { id, boardId, board: { orgId } },
+      include: { cards: true },
+    })
+
+    if (!listToCopy) {
+      return {
+        error: "List nt found",
+      }
+    }
+
+    const lastList = await db.list.findFirst({
+      where: { boardId },
+      orderBy: { order: "desc" },
+      select: { order: true },
+    })
+
+    const newOrder = lastList ? lastList.order + 1 : 1
+
+    list = await db.list.create({
+      data: {
+        boardId,
+        title: `${listToCopy.title} - Copy`,
+        order: newOrder,
+        cards: {
+          createMany: {
+            data: listToCopy.cards.map((card) => ({
+              title: card.title,
+              description: card.description,
+              order: card.order,
+            })),
+          },
+        },
+      },
+      include: { cards: true },
+    })
+  } catch (error) {
+    console.log(error)
+    return { error: "Failed to duplicate list" }
+  }
+
+  revalidatePath(`/board/${list.boardId}`)
+  return { data: list }
+}
+
+export const duplicateList = createSafeAction(
+  DuplicateListSchema,
+  duplicateHandler
 )
