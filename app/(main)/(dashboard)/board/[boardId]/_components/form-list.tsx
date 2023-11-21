@@ -20,8 +20,8 @@ export const FormList = () => {
   const formRef = useRef<ElementRef<"form">>(null)
   const [parent] = useAutoAnimate()
 
-  const { execute, isLoading, fieldErrors } = useAction(createList, {
-    onSuccess: (data) => setIsEditing(false),
+  const { execute, fieldErrors, reset } = useAction(createList, {
+    onSuccess: (data) => disableEditing(),
     onError: (error) => toast.error(error),
   })
 
@@ -33,7 +33,10 @@ export const FormList = () => {
     })
   }
 
-  const disableEditing = () => setIsEditing(false)
+  const disableEditing = () => {
+    setIsEditing(false)
+    reset()
+  }
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {

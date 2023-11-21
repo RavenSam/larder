@@ -52,8 +52,15 @@ export const useAction = <TInput, TOutput>(
     [actions, options]
   )
 
+  const reset = () => {
+    setFieldErrors(undefined)
+    setError(undefined)
+    setData(undefined)
+  }
+
   return {
     execute,
+    reset,
     fieldErrors,
     error,
     data,
