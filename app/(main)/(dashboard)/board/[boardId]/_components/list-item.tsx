@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import { ListHeader } from "./list-header";
-import { ListWithCards } from "@/types";
-import { useEditing } from "@/hooks/use-editing";
-import { FormCard } from "./form-card";
-import { Ref } from "react";
-import { CardItem } from "./card-item";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ListHeader } from "./list-header"
+import { ListWithCards } from "@/types"
+import { useEditing } from "@/hooks/use-editing"
+import { FormCard } from "./form-card"
+import { Ref } from "react"
+import { CardItem } from "./card-item"
+import { Draggable, Droppable } from "@hello-pangea/dnd"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface ListItemProps {
-  index: number;
-  list: ListWithCards;
+  index: number
+  list: ListWithCards
 }
 
 export const ListItem = ({ list, index }: ListItemProps) => {
-  const elEditing = useEditing({ el: "textarea" });
+  const elEditing = useEditing({ el: "textarea" })
 
   return (
     <Draggable draggableId={list.id} index={index}>
@@ -64,5 +64,5 @@ export const ListItem = ({ list, index }: ListItemProps) => {
         </li>
       )}
     </Draggable>
-  );
-};
+  )
+}

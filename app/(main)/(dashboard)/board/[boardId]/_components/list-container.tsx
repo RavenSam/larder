@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import { ListWithCards } from "@/types";
-import { FormList } from "./form-list";
-import { ListItem } from "./list-item";
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import { useBoardDnd } from "@/hooks/use-board-dnd";
+import { ListWithCards } from "@/types"
+import { FormList } from "./form-list"
+import { ListItem } from "./list-item"
+import { DragDropContext, Droppable } from "@hello-pangea/dnd"
+import { useBoardDnd } from "@/hooks/use-board-dnd"
 
 interface ListContainerProps {
-  lists: ListWithCards[];
-  boardId: string;
+  lists: ListWithCards[]
+  boardId: string
 }
 
 export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
-  const { onDragEnd, orderedData, setOrderedData } = useBoardDnd(lists);
+  const { onDragEnd, orderedData, setOrderedData } = useBoardDnd(lists)
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -36,5 +36,5 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
         )}
       </Droppable>
     </DragDropContext>
-  );
-};
+  )
+}

@@ -58,7 +58,7 @@ export const FormCard = forwardRef<HTMLTextAreaElement, FormCardProps>(
     useOnClickOutside(formRef, disableEditing);
 
     return (
-      <div className="pt-3 px-2" ref={parent}>
+      <div className="pt-2 px-2" ref={parent}>
         {!isEditing && (
           <Button
             onClick={enbleEditing}
