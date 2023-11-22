@@ -1,40 +1,63 @@
-"use client"
+"use client";
 
-import { ListHeader } from "./list-header"
-import { ListWrapper } from "./list-wrapper"
-import { ListWithCards } from "@/types"
-import { useEditing } from "@/hooks/use-editing"
-import { FormCard } from "./form-card"
-import { Ref } from "react"
-import { CardItem } from "./card-item"
+import { ListHeader } from "./list-header";
+import { ListWithCards } from "@/types";
+import { useEditing } from "@/hooks/use-editing";
+import { FormCard } from "./form-card";
+import { Ref } from "react";
+import { CardItem } from "./card-item";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 
 interface ListItemProps {
-  index: number
-  list: ListWithCards
+  index: number;
+  list: ListWithCards;
 }
 
 export const ListItem = ({ list, index }: ListItemProps) => {
-  const elEditing = useEditing({ el: "textarea" })
+  const elEditing = useEditing({ el: "textarea" });
 
   return (
-    <ListWrapper>
-      <div className="w-full rounded-md bg-white/70 backdrop-blur shadow-md pb-2">
-        <ListHeader list={list} onAddCard={elEditing.enbleEditing} />
+    <Draggable draggableId={list.id} index={index}>
+      {(provided) => (
+        <li
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          className="shrink-0 max-h-full h-min w-[272px] relative select-none"
+        >
+          <div className="absolute inset-0 bg-white/70 backdrop-blur rounded-md z-[0]" />
 
-        <ol className="p-2 py-0 flex flex-col gap-y-2">
-          {list.cards.map((card, i) => (
-            <CardItem card={card} key={card.id} index={i} />
-          ))}
-        </ol>
+          <div
+            {...provided.dragHandleProps}
+            className="w-full rounded-md relative shadow-md pb-2"
+          >
+            <ListHeader list={list} onAddCard={elEditing.enbleEditing} />
 
-        <FormCard
-          listId={list.id}
-          ref={elEditing.elRef as Ref<HTMLTextAreaElement>}
-          isEditing={elEditing.isEditing}
-          enbleEditing={elEditing.enbleEditing}
-          disableEditing={elEditing.disableEditing}
-        />
-      </div>
-    </ListWrapper>
-  )
-}
+            <Droppable droppableId={list.id} type="card">
+              {(provided) => (
+                <ol
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="p-2 py-0 flex flex-col gap-y-2"
+                >
+                  {list.cards.map((card, i) => (
+                    <CardItem card={card} key={card.id} index={i} />
+                  ))}
+
+                  {provided.placeholder}
+                </ol>
+              )}
+            </Droppable>
+
+            <FormCard
+              listId={list.id}
+              ref={elEditing.elRef as Ref<HTMLTextAreaElement>}
+              isEditing={elEditing.isEditing}
+              enbleEditing={elEditing.enbleEditing}
+              disableEditing={elEditing.disableEditing}
+            />
+          </div>
+        </li>
+      )}
+    </Draggable>
+  );
+};
