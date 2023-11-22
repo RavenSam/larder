@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 // --- Steps to implement a safe action
 // --------- Step 1: Create Zod Schema
@@ -18,4 +18,20 @@ export const CreateCardSchema = z.object({
 
   boardId: z.string(),
   listId: z.string(),
-})
+});
+
+// **********************************************************************
+// Reorder Cards Schema
+// **********************************************************************
+export const ReorderCardsSchema = z.object({
+  items: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      order: z.number(),
+      listId: z.string(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    })
+  ),
+});

@@ -22,7 +22,7 @@ export const ListItem = ({ list, index }: ListItemProps) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="shrink-0 max-h-full h-min w-[272px] relative select-none"
+          className="shrink-0 max-h-full h-min w-[272px] mx-2 relative select-none"
         >
           <div className="absolute inset-0 bg-white/70 backdrop-blur rounded-md z-[0]" />
 
@@ -37,7 +37,7 @@ export const ListItem = ({ list, index }: ListItemProps) => {
                 <ol
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="p-2 py-0 flex flex-col gap-y-2"
+                  className="p-2 py-0 flex flex-col"
                 >
                   {list.cards.map((card, i) => (
                     <CardItem card={card} key={card.id} index={i} />

@@ -1,12 +1,13 @@
-import { z } from "zod"
+import { z } from "zod";
 import {
   CreateListSchema,
   DeleteListSchema,
   DuplicateListSchema,
   UpdateListTitleSchema,
-} from "./schema"
-import { ActionState } from "@/lib/create-safe-action"
-import { List } from "@prisma/client"
+  ReorderListSchema,
+} from "./schema";
+import { ActionState } from "@/lib/create-safe-action";
+import { List } from "@prisma/client";
 
 // --- Steps to implement a safe action
 // --------- Step 1: Create Zod Schema
@@ -16,23 +17,29 @@ import { List } from "@prisma/client"
 // **********************************************************************
 // Create List types
 // **********************************************************************
-export type CreateInputType = z.infer<typeof CreateListSchema>
-export type CreateReturnType = ActionState<CreateInputType, List>
+export type CreateInputType = z.infer<typeof CreateListSchema>;
+export type CreateReturnType = ActionState<CreateInputType, List>;
 
 // **********************************************************************
 // Update List Title types
 // **********************************************************************
-export type UpdateTitleInputType = z.infer<typeof UpdateListTitleSchema>
-export type UpdateTitleReturnType = ActionState<UpdateTitleInputType, List>
+export type UpdateTitleInputType = z.infer<typeof UpdateListTitleSchema>;
+export type UpdateTitleReturnType = ActionState<UpdateTitleInputType, List>;
 
 // **********************************************************************
 // Delete List types
 // **********************************************************************
-export type DeleteInputType = z.infer<typeof DeleteListSchema>
-export type DeleteReturnType = ActionState<DeleteInputType, List>
+export type DeleteInputType = z.infer<typeof DeleteListSchema>;
+export type DeleteReturnType = ActionState<DeleteInputType, List>;
 
 // **********************************************************************
 // Duplicate List types
 // **********************************************************************
-export type DuplicateInputType = z.infer<typeof DuplicateListSchema>
-export type DuplicateReturnType = ActionState<DuplicateInputType, List>
+export type DuplicateInputType = z.infer<typeof DuplicateListSchema>;
+export type DuplicateReturnType = ActionState<DuplicateInputType, List>;
+
+// **********************************************************************
+// Reorder List types
+// **********************************************************************
+export type ReorderInputType = z.infer<typeof ReorderListSchema>;
+export type ReorderReturnType = ActionState<ReorderInputType, List[]>;
