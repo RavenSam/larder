@@ -7,6 +7,7 @@ import { FormCard } from "./form-card";
 import { Ref } from "react";
 import { CardItem } from "./card-item";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ListItemProps {
   index: number;
@@ -22,7 +23,7 @@ export const ListItem = ({ list, index }: ListItemProps) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="shrink-0 max-h-full h-min w-[272px] mx-2 relative select-none"
+          className="shrink-0 h-full w-[272px] mx-2 relative select-none"
         >
           <div className="absolute inset-0 bg-white/70 backdrop-blur rounded-md z-[0]" />
 
@@ -32,21 +33,25 @@ export const ListItem = ({ list, index }: ListItemProps) => {
           >
             <ListHeader list={list} onAddCard={elEditing.enbleEditing} />
 
-            <Droppable droppableId={list.id} type="card">
-              {(provided) => (
-                <ol
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="p-2 py-0 flex flex-col"
-                >
-                  {list.cards.map((card, i) => (
-                    <CardItem card={card} key={card.id} index={i} />
-                  ))}
+            <ScrollArea>
+              <div className="h-full relative max-h-[50vh]">
+                <Droppable droppableId={list.id} type="card">
+                  {(provided) => (
+                    <ol
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className="p-2 py-0 flex flex-col min-h-[5px]"
+                    >
+                      {list.cards.map((card, i) => (
+                        <CardItem card={card} key={card.id} index={i} />
+                      ))}
 
-                  {provided.placeholder}
-                </ol>
-              )}
-            </Droppable>
+                      {provided.placeholder}
+                    </ol>
+                  )}
+                </Droppable>
+              </div>
+            </ScrollArea>
 
             <FormCard
               listId={list.id}

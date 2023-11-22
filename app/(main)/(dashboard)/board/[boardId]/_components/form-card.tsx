@@ -1,61 +1,61 @@
-"use client"
+"use client";
 
-import { ElementRef, forwardRef, useRef } from "react"
-import { createCard } from "@/actions/card"
-import { FormSubmit } from "@/components/form/form-submit"
-import { FormTextarea } from "@/components/form/form-textarea"
-import { Button } from "@/components/ui/button"
-import { useAction } from "@/hooks/use-action"
-import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { Plus } from "lucide-react"
-import { useParams } from "next/navigation"
-import { toast } from "sonner"
-import { useEventListener, useOnClickOutside } from "usehooks-ts"
+import { ElementRef, forwardRef, useRef } from "react";
+import { createCard } from "@/actions/card";
+import { FormSubmit } from "@/components/form/form-submit";
+import { FormTextarea } from "@/components/form/form-textarea";
+import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { Plus } from "lucide-react";
+import { useParams } from "next/navigation";
+import { toast } from "sonner";
+import { useEventListener, useOnClickOutside } from "usehooks-ts";
 
 interface FormCardProps {
-  listId: string
-  isEditing: boolean
-  enbleEditing: () => void
-  disableEditing: () => void
+  listId: string;
+  isEditing: boolean;
+  enbleEditing: () => void;
+  disableEditing: () => void;
 }
 
 export const FormCard = forwardRef<HTMLTextAreaElement, FormCardProps>(
   ({ disableEditing, enbleEditing, isEditing, listId }, ref) => {
-    const params = useParams()
-    const formRef = useRef<ElementRef<"form">>(null)
-    const [parent] = useAutoAnimate()
+    const params = useParams();
+    const formRef = useRef<ElementRef<"form">>(null);
+    const [parent] = useAutoAnimate();
 
     const { execute, fieldErrors } = useAction(createCard, {
       onSuccess: (data) => {
-        disableEditing()
-        formRef.current?.reset()
+        disableEditing();
+        formRef.current?.reset();
       },
       onError: (error) => toast.error(error),
-    })
+    });
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        disableEditing()
+        disableEditing();
       }
-    }
+    };
 
     const onTextAreaKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault()
-        formRef.current?.requestSubmit()
+        e.preventDefault();
+        formRef.current?.requestSubmit();
       }
-    }
+    };
 
     const onSubmit = (formData: FormData) => {
-      const title = formData.get("title") as string
-      const listId = formData.get("listId") as string
-      const boardId = formData.get("boardId") as string
+      const title = formData.get("title") as string;
+      const listId = formData.get("listId") as string;
+      const boardId = formData.get("boardId") as string;
 
-      execute({ title, listId, boardId })
-    }
+      execute({ title, listId, boardId });
+    };
 
-    useEventListener("keydown", onKeyDown)
-    useOnClickOutside(formRef, disableEditing)
+    useEventListener("keydown", onKeyDown);
+    useOnClickOutside(formRef, disableEditing);
 
     return (
       <div className="pt-3 px-2" ref={parent}>
@@ -90,8 +90,8 @@ export const FormCard = forwardRef<HTMLTextAreaElement, FormCardProps>(
           </form>
         )}
       </div>
-    )
+    );
   }
-)
+);
 
-FormCard.displayName = "FormCard"
+FormCard.displayName = "FormCard";

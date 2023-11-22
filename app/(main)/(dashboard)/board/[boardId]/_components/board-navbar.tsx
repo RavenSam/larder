@@ -1,9 +1,9 @@
-import { Board } from "@prisma/client"
-import { FormBoardTitle } from "./form-board-title"
-import BoardOptions from "./board-options"
+import { Board } from "@prisma/client";
+import { FormBoardTitle } from "./form-board-title";
+import BoardOptions from "./board-options";
 
 interface BoardNavbarProps {
-  board: Board
+  board: Board;
 }
 
 export const BoardNavbar = ({ board }: BoardNavbarProps) => {
@@ -15,5 +15,5 @@ export const BoardNavbar = ({ board }: BoardNavbarProps) => {
         <BoardOptions id={board.id} />
       </div>
     </div>
-  )
-}
+  );
+};

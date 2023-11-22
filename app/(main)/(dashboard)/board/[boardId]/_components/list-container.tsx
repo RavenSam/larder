@@ -31,7 +31,7 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
 
             <FormList />
 
-            <div className="flex-shrink-0 w-1" />
+            <div className="flex-shrink-0 w-4" />
           </ol>
         )}
       </Droppable>
