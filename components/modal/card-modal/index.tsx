@@ -8,14 +8,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useCardModal } from "@/hooks/use-card-modal"
+import { useSearchParams, useRouter } from "next/navigation"
 import { CardWithList } from "@/types"
 import { fetcher } from "@/lib/fetcher"
 import { useQuery } from "@tanstack/react-query"
 import { CardModalHeader } from "./card-modal-header"
-import { useSearchParams, useRouter } from "next/navigation"
+import { CardModalDescription } from "./card-modal-description"
 
 export const CardModal = () => {
-  const { id, isOpen, onClose, onOpen } = useCardModal()
+  const { id, isOpen, onClose } = useCardModal()
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -31,22 +32,26 @@ export const CardModal = () => {
     <Dialog
       open={!!cardId || isOpen}
       onOpenChange={() => {
-        onClose()
         router.back()
+        onClose()
       }}
     >
-      <DialogContent>
-        <DialogHeader>
-          {card ? (
-            <CardModalHeader card={card} />
-          ) : (
-            <CardModalHeader.Skeleton />
-          )}
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-[650px] bg-card/90 backdrop-blur">
+        {card ? <CardModalHeader card={card} /> : <CardModalHeader.Skeleton />}
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="md:col-span-3">
+            <div className="w-full space-y-6">
+              {card ? (
+                <CardModalDescription card={card} />
+              ) : (
+                <CardModalDescription.Skeleton />
+              )}
+            </div>
+          </div>
+
+          <div className="md:col-span-1">Yes</div>
+        </div>
       </DialogContent>
     </Dialog>
   )

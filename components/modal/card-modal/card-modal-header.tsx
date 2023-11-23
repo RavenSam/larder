@@ -57,7 +57,10 @@ export const CardModalHeader = ({ card }: Props) => {
         </form>
 
         <p className="text-muted-foreground text-xs">
-          <span className="border font-semibold rounded-full py-0.5 px-2 border-sky-500 text-sky-500">
+          <span
+            title={card?.list.title}
+            className="border font-semibold truncate block w-min max-w-[15rem] rounded-full py-0.5 px-2 border-sky-500 text-sky-500"
+          >
             {card?.list.title}
           </span>
         </p>

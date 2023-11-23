@@ -146,7 +146,9 @@ const updateHandler = async (
     return { error: "Failed to update card" }
   }
 
-  revalidatePath(`/board/${boardId}`)
+  if (!data.description) {
+    revalidatePath(`/board/${boardId}`)
+  }
 
   return { data: card }
 }
