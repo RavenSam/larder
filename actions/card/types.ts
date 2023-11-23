@@ -1,7 +1,11 @@
-import { z } from "zod";
-import { CreateCardSchema, ReorderCardsSchema } from "./schema";
-import { ActionState } from "@/lib/create-safe-action";
-import { Card } from "@prisma/client";
+import { z } from "zod"
+import {
+  CreateCardSchema,
+  ReorderCardsSchema,
+  UpdateCardSchema,
+} from "./schema"
+import { ActionState } from "@/lib/create-safe-action"
+import { Card } from "@prisma/client"
 
 // --- Steps to implement a safe action
 // --------- Step 1: Create Zod Schema
@@ -11,11 +15,17 @@ import { Card } from "@prisma/client";
 // **********************************************************************
 // Create Card types
 // **********************************************************************
-export type CreateInputType = z.infer<typeof CreateCardSchema>;
-export type CreateReturnType = ActionState<CreateInputType, Card>;
+export type CreateInputType = z.infer<typeof CreateCardSchema>
+export type CreateReturnType = ActionState<CreateInputType, Card>
 
 // **********************************************************************
 // Reorder Card types
 // **********************************************************************
-export type ReorderInputType = z.infer<typeof ReorderCardsSchema>;
-export type ReorderReturnType = ActionState<ReorderInputType, Card[]>;
+export type ReorderInputType = z.infer<typeof ReorderCardsSchema>
+export type ReorderReturnType = ActionState<ReorderInputType, Card[]>
+
+// **********************************************************************
+// Update Card types
+// **********************************************************************
+export type UpdateInputType = z.infer<typeof UpdateCardSchema>
+export type UpdateReturnType = ActionState<UpdateInputType, Card>

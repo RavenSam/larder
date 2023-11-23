@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
   PopoverClose,
 } from "@/components/ui/popover"
-import { Loader2, MoreHorizontalIcon, Trash, XIcon } from "lucide-react"
+import { Loader2, Settings, Trash, XIcon } from "lucide-react"
 import { useAction } from "@/hooks/use-action"
 import { deleteBoard } from "@/actions/board"
 import { toast } from "sonner"
@@ -26,8 +26,12 @@ export default function BoardOptions({ id }: { id: string }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size={"icon"} variant={"transparent"} className="">
-          <MoreHorizontalIcon className="h-5 w-5" />
+        <Button
+          size={"icon"}
+          variant={"transparent"}
+          className="drop-shadow-md"
+        >
+          <Settings className="h-5 w-5" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
