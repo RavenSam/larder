@@ -12,17 +12,29 @@ import { CardWithList } from "@/types"
 import { fetcher } from "@/lib/fetcher"
 import { useQuery } from "@tanstack/react-query"
 import { CardModalHeader } from "./card-modal-header"
+import { useSearchParams, useRouter } from "next/navigation"
 
 export const CardModal = () => {
-  const { id, isOpen, onClose } = useCardModal()
+  const { id, isOpen, onClose, onOpen } = useCardModal()
+
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const cardId = searchParams.get("card")
 
   const { data: card } = useQuery<CardWithList>({
-    queryKey: ["card", id],
-    queryFn: () => fetcher(`/api/card/${id}`),
+    queryKey: ["card", cardId || id],
+    queryFn: () => fetcher(`/api/card/${cardId || id}`),
   })
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={!!cardId || isOpen}
+      onOpenChange={() => {
+        onClose()
+        router.back()
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           {card ? (
