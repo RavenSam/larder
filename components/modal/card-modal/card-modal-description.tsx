@@ -41,7 +41,6 @@ export const CardModalDescription = ({ card }: Props) => {
     if (card.description !== value) {
       execute({
         id: card.id,
-        title: card.title,
         boardId: params.boardId,
         description: value,
       })
@@ -63,13 +62,13 @@ export const CardModalDescription = ({ card }: Props) => {
           />
 
           {isLoading && (
-            <div className="absolute top-0 right-0 -translate-y-full opacity-50 p-2 pointer-vnt-none">
+            <div className="absolute top-0 right-0 -translate-y-full opacity-50 p-2 pointer-events-none">
               <Loader2 className="h-4 w-4 animate-spin" />
             </div>
           )}
 
           {!isLoading && saved && (
-            <div className="absolute top-0 right-0 text-xs -translate-y-full opacity-50 p-2 pointer-vnt-none">
+            <div className="absolute top-0 right-0 text-xs -translate-y-full opacity-50 p-2 pointer-events-none">
               saved
             </div>
           )}

@@ -49,7 +49,7 @@ export default async function BoardLayout({ children, params }: Props) {
         property="100"
       /> */}
 
-      <div className="absolute inset-0 bg-black/20" />
+      {/* <div className="absolute inset-0 bg-black/20" /> */}
 
       <BoardNavbar board={board} />
 

@@ -13,7 +13,7 @@ export default function Logo() {
     <Link href="/">
       <div
         className={cn(
-          "flex items-center text-neutral-700 hover:opacity-80 transition",
+          "flex items-center hover:opacity-80 transition",
           headingFont.className
         )}
       >

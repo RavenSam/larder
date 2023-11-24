@@ -40,12 +40,14 @@ export const ReorderCardsSchema = z.object({
 // Update Card Schema
 // **********************************************************************
 export const UpdateCardSchema = z.object({
-  title: z
-    .string({
-      required_error: "Title is required",
-      invalid_type_error: "Title is required",
-    })
-    .min(3, "Title is too short"),
+  title: z.optional(
+    z
+      .string({
+        required_error: "Title is required",
+        invalid_type_error: "Title is required",
+      })
+      .min(3, "Title is too short")
+  ),
 
   description: z.optional(
     z
@@ -58,5 +60,21 @@ export const UpdateCardSchema = z.object({
 
   boardId: z.string(),
 
+  id: z.string(),
+})
+
+// **********************************************************************
+// Duplicate Card Schema
+// **********************************************************************
+export const DuplicateCardSchema = z.object({
+  boardId: z.string(),
+  id: z.string(),
+})
+
+// **********************************************************************
+// Delete Card Schema
+// **********************************************************************
+export const DeleteCardSchema = z.object({
+  boardId: z.string(),
   id: z.string(),
 })

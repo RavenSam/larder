@@ -14,6 +14,7 @@ import { fetcher } from "@/lib/fetcher"
 import { useQuery } from "@tanstack/react-query"
 import { CardModalHeader } from "./card-modal-header"
 import { CardModalDescription } from "./card-modal-description"
+import { CardModalActions } from "./card-modal-actions"
 
 export const CardModal = () => {
   const { id, isOpen, onClose } = useCardModal()
@@ -50,7 +51,13 @@ export const CardModal = () => {
             </div>
           </div>
 
-          <div className="md:col-span-1">Yes</div>
+          <div className="md:col-span-1">
+            {card ? (
+              <CardModalActions card={card} />
+            ) : (
+              <CardModalActions.Skeleton />
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

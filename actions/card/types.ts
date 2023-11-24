@@ -3,6 +3,8 @@ import {
   CreateCardSchema,
   ReorderCardsSchema,
   UpdateCardSchema,
+  DuplicateCardSchema,
+  DeleteCardSchema,
 } from "./schema"
 import { ActionState } from "@/lib/create-safe-action"
 import { Card } from "@prisma/client"
@@ -29,3 +31,15 @@ export type ReorderReturnType = ActionState<ReorderInputType, Card[]>
 // **********************************************************************
 export type UpdateInputType = z.infer<typeof UpdateCardSchema>
 export type UpdateReturnType = ActionState<UpdateInputType, Card>
+
+// **********************************************************************
+// Duplicate Card types
+// **********************************************************************
+export type DuplicateInputType = z.infer<typeof DuplicateCardSchema>
+export type DuplicateReturnType = ActionState<DuplicateInputType, Card>
+
+// **********************************************************************
+// Delete Card types
+// **********************************************************************
+export type DeleteInputType = z.infer<typeof DeleteCardSchema>
+export type DeleteReturnType = ActionState<DeleteInputType, Card>
