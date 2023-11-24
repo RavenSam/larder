@@ -15,6 +15,8 @@ import { useQuery } from "@tanstack/react-query"
 import { CardModalHeader } from "./card-modal-header"
 import { CardModalDescription } from "./card-modal-description"
 import { CardModalActions } from "./card-modal-actions"
+import { CardModalActivity } from "./card-modal-activity"
+import { AuditLog } from "@prisma/client"
 
 export const CardModal = () => {
   const { id, isOpen, onClose } = useCardModal()
@@ -28,6 +30,10 @@ export const CardModal = () => {
     queryKey: ["card", cardId || id],
     queryFn: () => fetcher(`/api/card/${cardId || id}`),
   })
+  const { data: auditLog } = useQuery<AuditLog[]>({
+    queryKey: ["card-logs", cardId || id],
+    queryFn: () => fetcher(`/api/card/${cardId || id}/logs`),
+  })
 
   return (
     <Dialog
@@ -37,7 +43,7 @@ export const CardModal = () => {
         onClose()
       }}
     >
-      <DialogContent className="max-w-[650px] bg-card/90 backdrop-blur">
+      <DialogContent className="max-w-2xl bg-card/90 backdrop-blur">
         {card ? <CardModalHeader card={card} /> : <CardModalHeader.Skeleton />}
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -47,6 +53,12 @@ export const CardModal = () => {
                 <CardModalDescription card={card} />
               ) : (
                 <CardModalDescription.Skeleton />
+              )}
+
+              {auditLog ? (
+                <CardModalActivity logs={auditLog} />
+              ) : (
+                <CardModalActivity.Skeleton />
               )}
             </div>
           </div>

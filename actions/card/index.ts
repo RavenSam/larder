@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/lib/db"
+import { createAuditLog } from "@/lib/create-audit-log"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
+import { ENTITY_TYPE, ACTION } from "@prisma/client"
 
 import { createSafeAction } from "@/lib/create-safe-action"
 
@@ -72,6 +74,13 @@ const createdHandler = async (
 
     card = await db.card.create({
       data: { title, description: "", listId, order: newOrder },
+    })
+
+    await createAuditLog({
+      entityId: card.id,
+      entityType: ENTITY_TYPE.CARD,
+      entityTitle: card.title,
+      action: ACTION.CREATE,
     })
   } catch (error) {
     console.log(error)

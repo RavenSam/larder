@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
-import { CopyIcon, TrashIcon, Loader2 } from "lucide-react"
+import { CopyIcon, TrashIcon, Loader2, GitCommitVertical } from "lucide-react"
 import { useAction } from "@/hooks/use-action"
 import { deleteCard, duplicateCard } from "@/actions/card"
 import { toast } from "sonner"
@@ -56,7 +56,10 @@ export const CardModalActions = ({ card }: Props) => {
 
   return (
     <div className="w-full space-y-2">
-      <p className="font-semibold">Actions</p>
+      <p className="font-semibold flex items-center">
+        {/* <GitCommitVertical className="h-6 w-6 mr-2" /> */}
+        Actions
+      </p>
 
       <div className="space-y-2">
         <Button
